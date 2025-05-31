@@ -5,6 +5,8 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = 'sua_chave_secreta_aqui'
+
+# Diretório para uploads de imagens
 UPLOAD_FOLDER = 'static/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -58,7 +60,7 @@ def login():
             session['role'] = user[3]
             return redirect(url_for('dashboard'))
         else:
-            flash('Usuário ou senha incorretos')
+            flash('❌ Usuário ou senha incorretos.')
     return render_template('login.html')
 
 # ───── DASHBOARD ─────
@@ -66,6 +68,7 @@ def login():
 def dashboard():
     if 'username' not in session:
         return redirect(url_for('login'))
+
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM ortomosaicos")
@@ -76,13 +79,18 @@ def dashboard():
 # ───── VISUALIZAR QUADRA ─────
 @app.route('/quadra/<int:id>')
 def ver_quadra(id):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM ortomosaicos WHERE id=?", (id,))
     quadra = cursor.fetchone()
     conn.close()
+
     if not quadra:
-        return "Quadra não encontrada", 404
+        return "⚠️ Quadra não encontrada.", 404
+
     return render_template('quadra.html', quadra=quadra)
 
 # ───── LOGOUT ─────
@@ -97,15 +105,16 @@ def criar_usuario():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     try:
-        cursor.execute("INSERT INTO users (username, password, role) VALUES ('admin', 'admin', 'supervisor')")
+        cursor.execute("INSERT INTO users (username, password, role) VALUES (?, ?, ?)", 
+                       ('admin', 'admin', 'supervisor'))
         conn.commit()
-        flash('Usuário admin criado.')
-    except:
-        flash('Usuário já existe.')
+        flash('✅ Usuário admin criado com sucesso.')
+    except sqlite3.IntegrityError:
+        flash('ℹ️ Usuário admin já existe.')
     conn.close()
     return redirect(url_for('login'))
 
-# ───── MAIN ─────
+# ───── EXECUÇÃO ─────
 if __name__ == '__main__':
     init_db()
     app.run(host='0.0.0.0', port=10000)
