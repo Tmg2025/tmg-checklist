@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Quadra {{ item[2] }} | TMG Checklist</title>
+</head>
+<body>
+    <h2>Quadra: {{ item[2] }}</h2>
+    <p><strong>Projeto:</strong> {{ item[4] }}</p>
+    <p><strong>Cliente:</strong> {{ item[5] }}</p>
+    <p><strong>Cultura:</strong> {{ item[7] }}</p>
+    <p><strong>Região:</strong> {{ item[8] }}</p>
+    <p><strong>Data de Registro:</strong> {{ item[6][:10] }}</p>
+    <p><strong>Descrição:</strong> {{ item[3] }}</p>
+
+    <h3>Imagem do Ortomosaico:</h3>
+    <img src="{{ url_for('static', filename='uploads/' ~ item[1]) }}" style="max-width: 90%; height: auto;"><br><br>
+
+    <a href="/dashboard">⬅ Voltar para o painel</a>
+</body>
+</html>

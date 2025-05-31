@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | TMG Checklist</title>
+</head>
+<body>
+    <h2>Painel de Ortomosaicos</h2>
+    <p>
+        <a href="/upload">➕ Enviar novo ortomosaico</a> |
+        <a href="/logout">Sair</a>
+    </p>
+
+    <h3>Filtros:</h3>
+    <form method="GET">
+        Projeto:
+        <select name="projeto">
+            <option value="">Todos</option>
+            {% for p in projetos %}
+            <option value="{{ p }}">{{ p }}</option>
+            {% endfor %}
+        </select>
+
+        Cultura:
+        <select name="cultura">
+            <option value="">Todas</option>
+            {% for c in culturas %}
+            <option value="{{ c }}">{{ c }}</option>
+            {% endfor %}
+        </select>
+
+        Região:
+        <select name="regiao">
+            <option value="">Todas</option>
+            {% for r in regioes %}
+            <option value="{{ r }}">{{ r }}</option>
+            {% endfor %}
+        </select>
+
+        Quadra:
+        <input type="text" name="quadra" placeholder="Ex: 132 ou 132 e 133">
+
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <h3>Resultados:</h3>
+    <ul>
+        {% for item in dados %}
+        <li>
+            <a href="/quadra/{{ item[0] }}">
+                [{{ item[6][:10] }}] {{ item[2] }} – {{ item[4] }} ({{ item[7] }}, {{ item[8] }})
+            </a>
+        </li>
+        {% else %}
+        <li>Nenhum ortomosaico encontrado com os filtros aplicados.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

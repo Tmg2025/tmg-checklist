@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload | TMG Checklist</title>
+</head>
+<body>
+    <h2>Enviar novo ortomosaico</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <label>Projeto:</label><br>
+        <input type="text" name="projeto" required><br><br>
+
+        <label>Cliente:</label><br>
+        <input type="text" name="cliente" required><br><br>
+
+        <label>Cultura:</label><br>
+        <select name="cultura" required>
+            <option value="soja">Soja</option>
+            <option value="milho">Milho</option>
+            <option value="algodao">Algodão</option>
+        </select><br><br>
+
+        <label>Região:</label><br>
+        <input type="text" name="regiao" required><br><br>
+
+        <label>Quadra(s):</label><br>
+        <input type="text" name="quadra" required><br><br>
+
+        <label>Descrição / Observações:</label><br>
+        <textarea name="descricao" rows="4" cols="40"></textarea><br><br>
+
+        <label>Imagem do ortomosaico:</label><br>
+        <input type="file" name="arquivo" accept="image/*" required><br><br>
+
+        <button type="submit">Enviar</button>
+    </form>
+    <br>
+    <a href="/dashboard">⬅ Voltar ao painel</a>
+</body>
+</html>
